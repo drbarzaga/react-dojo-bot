@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: react-dojo-bot
+    runtime: node
+    buildCommand: bun install
+    startCommand: bun src/server.ts
+    healthCheckPath: /health
+    envVars:
+      - key: GITHUB_WEBHOOK_SECRET
+        sync: false
+      - key: DISCORD_WEBHOOK_URL
+        sync: false
+      - key: GITHUB_REPO
+        value: drbarzaga/react-dojo
