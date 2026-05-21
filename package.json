@@ -5,7 +5,8 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "bun --watch src/server.ts",
-    "start": "bun src/server.ts"
+    "build": "bun build src/server.ts --outdir dist --target node",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
