@@ -1,9 +1,8 @@
 // src/verify.ts
 export async function verifyGithubSignature(
-  req: Request,
+  signature: string | null,
   rawBody: string
 ): Promise<boolean> {
-  const signature = req.headers.get("x-hub-signature-256");
   if (!signature) return false;
 
   const secret = process.env.GITHUB_WEBHOOK_SECRET!;

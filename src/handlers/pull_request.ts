@@ -1,5 +1,5 @@
 // src/handlers/pull_request.ts
-import { sendDiscordEmbed } from "../discord";
+import { sendDiscordEmbed } from "../discord.ts";
 
 const ACTION_CONFIG: Record<string, { emoji: string; color: number; label: string }> = {
   opened:           { emoji: "📬", color: 0x1d9e75, label: "opened"           },

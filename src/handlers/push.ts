@@ -1,5 +1,5 @@
 // src/handlers/push.ts
-import { sendDiscordEmbed } from "../discord";
+import { sendDiscordEmbed } from "../discord.ts";
 
 export async function handlePush(payload: any): Promise<void> {
   const { ref, commits, pusher, repository, compare } = payload;

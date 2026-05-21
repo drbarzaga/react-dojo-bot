@@ -2,8 +2,8 @@ services:
   - type: web
     name: react-dojo-bot
     runtime: node
-    buildCommand: bun install && bun run build
-    startCommand: node dist/server.js
+    buildCommand: bun install
+    startCommand: node src/server.ts
     healthCheckPath: /health
     envVars:
       - key: GITHUB_WEBHOOK_SECRET

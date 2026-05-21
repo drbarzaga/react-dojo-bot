@@ -1,5 +1,5 @@
 // src/handlers/issues.ts
-import { sendDiscordEmbed } from "../discord";
+import { sendDiscordEmbed } from "../discord.ts";
 
 const ACTION_CONFIG: Record<string, { emoji: string; color: number }> = {
   opened:   { emoji: "🐛", color: 0xe24b4a },
