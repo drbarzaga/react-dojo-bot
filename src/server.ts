@@ -5,6 +5,7 @@ import { verifyGithubSignature } from "./verify.ts";
 import { handlePush } from "./handlers/push.ts";
 import { handlePullRequest } from "./handlers/pull_request.ts";
 import { handleIssues } from "./handlers/issues.ts";
+import { handleStar } from "./handlers/star.ts";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const EXPECTED_REPO = process.env.GITHUB_REPO;
@@ -23,6 +24,7 @@ const EVENT_HANDLERS: Record<string, (payload: any) => Promise<void>> = {
   push:         handlePush,
   pull_request: handlePullRequest,
   issues:       handleIssues,
+  star:         handleStar,
 };
 
 function readBody(req: IncomingMessage): Promise<string> {
