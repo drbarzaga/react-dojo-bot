@@ -22,6 +22,9 @@ if (!DISCORD_URL || DISCORD_URL.includes("TU_ID") || DISCORD_URL.includes("TU_TO
   process.exit(1);
 }
 
+const DIGEST_MIN_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+let lastDigestAt = 0;
+
 const EVENT_HANDLERS: Record<string, (payload: any) => Promise<void>> = {
   push:         handlePush,
   pull_request: handlePullRequest,
@@ -55,6 +58,15 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
         res.end("Unauthorized");
         return;
       }
+      const now = Date.now();
+      const elapsed = now - lastDigestAt;
+      if (elapsed < DIGEST_MIN_INTERVAL_MS) {
+        const retryAfter = Math.ceil((DIGEST_MIN_INTERVAL_MS - elapsed) / 1000);
+        res.writeHead(429, { "Retry-After": String(retryAfter) });
+        res.end(`Rate limited. Try again in ${retryAfter}s`);
+        return;
+      }
+      lastDigestAt = now;
       sendWeeklyDigest().catch((err: Error) => console.error("Digest error:", err));
       res.writeHead(202);
       res.end("Digest triggered");
