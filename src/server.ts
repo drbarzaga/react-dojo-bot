@@ -6,6 +6,8 @@ import { handlePush } from "./handlers/push.ts";
 import { handlePullRequest } from "./handlers/pull_request.ts";
 import { handleIssues } from "./handlers/issues.ts";
 import { handleStar } from "./handlers/star.ts";
+import { sendWeeklyDigest } from "./digest.ts";
+import { startScheduler } from "./scheduler.ts";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const EXPECTED_REPO = process.env.GITHUB_REPO;
@@ -43,6 +45,19 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
     if (req.method === "GET" && url.pathname === "/health") {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ status: "ok", repo: EXPECTED_REPO ?? "any" }));
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/digest") {
+      const auth = req.headers["authorization"] ?? "";
+      if (auth !== `Bearer ${process.env.GITHUB_WEBHOOK_SECRET}`) {
+        res.writeHead(401);
+        res.end("Unauthorized");
+        return;
+      }
+      sendWeeklyDigest().catch((err: Error) => console.error("Digest error:", err));
+      res.writeHead(202);
+      res.end("Digest triggered");
       return;
     }
 
@@ -101,4 +116,5 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
 
 server.listen(PORT, () => {
   console.log(`React Dojo Bot listening on :${PORT} | Repo: ${EXPECTED_REPO ?? "any"}`);
+  startScheduler();
 });
