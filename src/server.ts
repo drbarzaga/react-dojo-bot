@@ -6,6 +6,7 @@ import { handlePush } from "./handlers/push.ts";
 import { handlePullRequest } from "./handlers/pull_request.ts";
 import { handleIssues } from "./handlers/issues.ts";
 import { handleStar } from "./handlers/star.ts";
+import { handleFork } from "./handlers/fork.ts";
 import { sendWeeklyDigest } from "./digest.ts";
 import { startScheduler } from "./scheduler.ts";
 
@@ -30,6 +31,7 @@ const EVENT_HANDLERS: Record<string, (payload: any) => Promise<void>> = {
   pull_request: handlePullRequest,
   issues:       handleIssues,
   star:         handleStar,
+  fork:         handleFork,
 };
 
 function readBody(req: IncomingMessage): Promise<string> {
