@@ -4,6 +4,7 @@ import { sendDiscordEmbed } from "../discord.ts";
 const ACTION_CONFIG: Record<string, { emoji: string; color: number }> = {
   opened:   { emoji: "🐛", color: 0xe24b4a },
   closed:   { emoji: "✔️", color: 0x639922 },
+  reopened: { emoji: "🔄", color: 0xef9f27 },
   labeled:  { emoji: "🏷️", color: 0x378add },
 };
 
