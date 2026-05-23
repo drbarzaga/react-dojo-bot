@@ -1,10 +1,12 @@
 // src/handlers/push.ts
 import { sendDiscordEmbed } from "../discord.ts";
 
+const WATCH_BRANCH = process.env.WATCH_BRANCH ?? "main";
+
 export async function handlePush(payload: any): Promise<void> {
   const { ref, commits, pusher, repository, compare } = payload;
 
-  if (ref !== "refs/heads/main") return;
+  if (ref !== `refs/heads/${WATCH_BRANCH}`) return;
 
   const branch = ref.replace("refs/heads/", "");
   const commitCount = commits.length;
@@ -25,7 +27,7 @@ export async function handlePush(payload: any): Promise<void> {
     title: `🔀 ${commitCount} commit${commitCount > 1 ? "s" : ""} to \`${branch}\``,
     description: commitList + extra,
     url: compare,
-    color: 0x7f77dd, // purple de React Dojo
+    color: 0x7f77dd, // React Dojo purple
     author: {
       name: pusher.name,
       url: `https://github.com/${pusher.name}`,

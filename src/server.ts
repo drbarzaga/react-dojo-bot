@@ -7,6 +7,8 @@ import { handlePullRequest } from "./handlers/pull_request.ts";
 import { handleIssues } from "./handlers/issues.ts";
 import { handleStar } from "./handlers/star.ts";
 import { handleFork } from "./handlers/fork.ts";
+import { handleRelease } from "./handlers/release.ts";
+import { handlePullRequestReview } from "./handlers/pull_request_review.ts";
 import { sendWeeklyDigest } from "./digest.ts";
 import { startScheduler } from "./scheduler.ts";
 
@@ -27,11 +29,13 @@ const DIGEST_MIN_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 let lastDigestAt = 0;
 
 const EVENT_HANDLERS: Record<string, (payload: any) => Promise<void>> = {
-  push:         handlePush,
-  pull_request: handlePullRequest,
-  issues:       handleIssues,
-  star:         handleStar,
-  fork:         handleFork,
+  push:                 handlePush,
+  pull_request:         handlePullRequest,
+  pull_request_review:  handlePullRequestReview,
+  issues:               handleIssues,
+  star:                 handleStar,
+  fork:                 handleFork,
+  release:              handleRelease,
 };
 
 function readBody(req: IncomingMessage): Promise<string> {

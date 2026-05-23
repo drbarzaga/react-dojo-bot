@@ -7,7 +7,15 @@ function msUntilNextMonday9amUTC(): number {
   const now = new Date();
   const target = new Date(now);
   const day = now.getUTCDay(); // 0=Sun, 1=Mon ... 6=Sat
-  const daysUntilMonday = day === 1 ? 7 : (8 - day) % 7;
+
+  if (day === 1) {
+    target.setUTCHours(9, 0, 0, 0);
+    if (target.getTime() > now.getTime()) return target.getTime() - now.getTime();
+    target.setUTCDate(target.getUTCDate() + 7);
+    return target.getTime() - now.getTime();
+  }
+
+  const daysUntilMonday = (8 - day) % 7;
   target.setUTCDate(now.getUTCDate() + daysUntilMonday);
   target.setUTCHours(9, 0, 0, 0);
   return target.getTime() - now.getTime();

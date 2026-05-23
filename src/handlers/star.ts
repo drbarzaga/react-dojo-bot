@@ -30,7 +30,7 @@ export async function handleStar(payload: any): Promise<void> {
       title: `🎉 Milestone reached! ${totalStars} stars`,
       description: MILESTONE_MESSAGES[totalStars],
       url: repository.html_url,
-      color: 0xf5c518, // dorado
+      color: 0xf5c518, // gold
       author: {
         name: sender.login,
         url: sender.html_url,
